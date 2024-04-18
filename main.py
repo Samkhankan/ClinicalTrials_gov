@@ -2,6 +2,7 @@ import math
 import uuid
 from datetime import datetime
 from io import StringIO
+from pathlib import Path
 
 import pandas as pd
 import requests as re
@@ -36,6 +37,8 @@ def save_to_parquet(data_frame: pd.DataFrame, pipeline_run_id: str, pipeline_sta
     '''
     data_frame['pipeline_run_id'] = pipeline_run_id
     data_frame['pipeline_start_timestamp'] = pipeline_start_timestamp
+    # create /data directory if not exisit
+    Path("./data").mkdir(parents=True, exist_ok=True)
     # write df to parquet format using pyarrow and gzip compression
     data_frame.to_parquet(f"data/cl_run_{pipeline_run_id}.parquet",
                           engine='pyarrow', compression='gzip')
